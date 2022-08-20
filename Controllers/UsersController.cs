@@ -30,15 +30,6 @@ namespace Macrosoft_Task.Controllers
         {
             try
             {
-                //string name = Path.GetFileNameWithoutExtension(model.ImageFile.FileName);
-                //string extension = Path.GetExtension(model.ImageFile.FileName);
-                //string imageName = name + DateTime.Now.ToString("yymmssfff") + extension;
-                //string path = webHostEnvironment.WebRootPath + "\\Images\\";
-                //using (FileStream fileStream = System.IO.File.Create(path + imageName))
-                //{
-                //    await model.ImageFile.CopyToAsync(fileStream);
-                //    fileStream.Flush();
-                //}
                 string imageName = await CopyImage(model.ImageFile);
 
                 var user = new User
