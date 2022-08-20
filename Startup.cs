@@ -1,9 +1,12 @@
+using Macrosoft_Task.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -32,6 +35,10 @@ namespace Macrosoft_Task
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Macrosoft_Task", Version = "v1" });
             });
+
+            // AppDbContext
+            services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("TaskDb")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +50,12 @@ namespace Macrosoft_Task
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Macrosoft_Task v1"));
             }
+
+            app.UseStaticFiles(new StaticFileOptions 
+            {
+                FileProvider = new PhysicalFileProvider(env.WebRootPath+"\\Images\\"),
+                RequestPath = "/Images"
+            });
 
             app.UseHttpsRedirection();
 
